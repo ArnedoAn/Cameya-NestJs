@@ -3,6 +3,7 @@ import { PrismaService } from 'src/services/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from 'src/auth/interfaces/login-dto/login-dto.interface';
 import * as bcrypt from 'bcrypt';
+import { LoginResponse } from 'src/auth/interfaces/login-response/login-response.interface';
 
 @Injectable()
 export class LoginService {
@@ -33,19 +34,12 @@ export class LoginService {
       });
 
       if ((await this.verifyPassword(user.password, result.password)) != true) {
-        return {
-          success: false,
-          error: 'Password is incorrect',
-        };
+        return null;
       }
-
-      return { success: true, user: result };
+      return result;
     } catch (err) {
       console.log(err.code);
-      return {
-        success: false,
-        error: err.message,
-      };
+      return null;
     }
   }
 }

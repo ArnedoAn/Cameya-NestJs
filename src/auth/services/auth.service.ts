@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Response } from '@nestjs/common';
 import { RegisterService } from './register/register.service';
 import { LoginService } from './login/login.service';
 import { RegisterResponse } from '../interfaces/register-response/register-response.interface';
@@ -13,15 +13,23 @@ export class AuthService {
     private loginService: LoginService,
   ) {}
 
-  async register(user: User): Promise<RegisterResponse> {
-    return await this.registerService.register(user);
+  async register(user: User, @Response() res: any): Promise<any> {
+    const result = await this.registerService.register(user);
+    if (result.success == false) {
+      return res.status(400).json(result);
+    }
+    return res.status(201).json(result);
   }
 
   async hardLogin(user: LoginDto): Promise<LoginResponse> {
     return (await this.loginService.hardLogin(user)) as LoginResponse;
   }
 
-  async login(user: LoginDto): Promise<LoginResponse> {
-    return (await this.loginService.softLogin(user)) as LoginResponse;
+  async login(user: LoginDto, @Response() res: any): Promise<any> {
+    const result = (await this.loginService.softLogin(user)) as LoginResponse;
+    if (result.success == false) {
+      return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
   }
 }
