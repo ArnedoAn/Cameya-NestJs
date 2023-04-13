@@ -24,7 +24,7 @@ model User {
   birth_date      String
   score           Float
   Worker          Worker?
-  //Service         Service[]
+  Service         Service[]
 }
 
 model Worker {
@@ -33,23 +33,23 @@ model Worker {
   service_detail String
   rate_hour      Float
   user           User      @relation(fields: [user_dni], references: [dni], onDelete: Cascade, onUpdate: Cascade)
-  //Service        Service[]
+  Service        Service[]
 }
 
-// model Service {
-//   id                  Int    @id @default(autoincrement())
-//   date_programed      String
-//   addres              String
-//   date_assignment     String
-//   hours               Float
-//   total               Float
-//   request_status      String
-//   service_status      String
-//   client_score        Float
-//   worker_score        Float
-//   service_description String
-//   client_dni          String
-//   worker_dni          String
-//   User                User   @relation(fields: [client_dni], references: [dni], onDelete: Cascade, onUpdate: Cascade)
-//   Worker              Worker @relation(fields: [worker_dni], references: [user_dni], onDelete: Cascade, onUpdate: Cascade)
-// }
+model Service {
+  id                  Int    @id @default(autoincrement())
+  date_programed      String
+  addres              String
+  date_assignment     String
+  hours               Float
+  total               Float
+  request_status      String
+  service_status      String
+  client_score        Float
+  worker_score        Float
+  service_description String
+  client_dni          String
+  worker_dni          String
+  User                User   @relation(fields: [client_dni], references: [dni], onDelete: Cascade, onUpdate: Cascade)
+  Worker              Worker @relation(fields: [worker_dni], references: [user_dni], onDelete: Cascade, onUpdate: Cascade)
+}
